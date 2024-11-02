@@ -2,13 +2,13 @@ import tkinter as tk
 import random
 import time
 
-# グローバル変数の初期化
+
 random_number = 0
 attempts = 0
 start_time = 0
 timer_running = False
 
-# 難易度を設定する関数
+
 def set_difficulty(difficulty):
     global random_number
     if difficulty == "Easy":
@@ -17,24 +17,24 @@ def set_difficulty(difficulty):
     elif difficulty == "Medium":
         random_number = random.randint(1, 500)
         instructions_label.config(text="Guess a number between 1 and 500:")
-    else:  # Hard
+    else:  
         random_number = random.randint(1, 1000)
         instructions_label.config(text="Guess a number between 1 and 1000:")
     
     start_new_game()
 
-# 新しいゲームを開始する関数
+
 def start_new_game():
     global attempts, start_time, timer_running
     attempts = 0
     start_time = time.time()
-    timer_running = True  # タイマーを起動
+    timer_running = True 
     result_label.config(text="")
     entry.delete(0, tk.END)
     submit_button.config(text="Submit", command=check_guess)
-    update_timer()  # タイマー更新を開始
+    update_timer() 
 
-    # 新しいランダムな数字を生成
+
     if instructions_label.cget("text") == "Guess a number between 1 and 100:":
         global random_number
         random_number = random.randint(1, 100)
@@ -43,27 +43,27 @@ def start_new_game():
     else:  # "Guess a number between 1 and 1000:"
         random_number = random.randint(1, 1000)
 
-# プレイヤーの入力をチェックする関数
+
 def check_guess():
     global attempts, timer_running
     try:
         guess = int(entry.get())
         attempts += 1
 
-        # 数字がランダムナンバーより小さい場合
+
         if guess < random_number:
             result_label.config(text="Too low! Try a higher number.")
         
-        # 数字がランダムナンバーより大きい場合
+
         elif guess > random_number:
             result_label.config(text="Too high! Try a lower number.")
         
-        # 数字が正解の場合
+
         else:
-            elapsed_time = round(time.time() - start_time)  # 小数点以下を削除
+            elapsed_time = round(time.time() - start_time)
             result_label.config(text=f"Congratulations! You guessed the number in {attempts} tries and {elapsed_time} seconds.")
             submit_button.config(text="Next Game", command=start_new_game)
-            timer_running = False  # タイマーを停止
+            timer_running = False 
         
         entry.delete(0, tk.END)
     
@@ -71,22 +71,22 @@ def check_guess():
         result_label.config(text="Please enter a valid integer.")
         entry.delete(0, tk.END)
 
-# タイマー更新関数
+
 def update_timer():
     if timer_running:
-        elapsed_time = round(time.time() - start_time)  # 小数点以下を削除
+        elapsed_time = round(time.time() - start_time)  
         timer_label.config(text=f"Time: {elapsed_time} seconds")
-        root.after(1000, update_timer)  # 1秒ごとにタイマーを更新
+        root.after(1000, update_timer) 
 
-# ウィンドウの設定
+
 root = tk.Tk()
 root.title("Number Guessing Game")
 
-# ラベル
+
 instructions_label = tk.Label(root, text="Guess a number between 1 and 100:")
 instructions_label.pack()
 
-# 難易度選択ボタン
+
 difficulty_frame = tk.Frame(root)
 difficulty_label = tk.Label(difficulty_frame, text="Select Difficulty:")
 difficulty_label.pack(side="left")
@@ -95,21 +95,21 @@ for difficulty in ["Easy", "Medium", "Hard"]:
     button.pack(side="left")
 difficulty_frame.pack()
 
-# タイマー表示ラベル
+
 timer_label = tk.Label(root, text="Time: 0 seconds")
 timer_label.pack()
 
-# 入力ボックス
+
 entry = tk.Entry(root)
 entry.pack()
 
-# ボタン
+
 submit_button = tk.Button(root, text="Submit", command=check_guess)
 submit_button.pack()
 
-# 結果のラベル
+
 result_label = tk.Label(root, text="")
 result_label.pack()
 
-# ウィンドウの表示
+
 root.mainloop()
